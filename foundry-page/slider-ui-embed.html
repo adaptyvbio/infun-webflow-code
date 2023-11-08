@@ -1,0 +1,259 @@
+<style>
+    .slider-and-stats-ctr {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        align-items: center;
+        column-gap: 30px;
+    }
+    .slider-container {
+        width: 100%;
+        height: 6px;
+        display: flex;
+        flex-wrap: wrap;
+        position: relative;
+        padding-bottom: 40px;
+        /* Adjust space for tick marks and labels */
+    }
+
+    .slider {
+        width: 100%;
+        margin: 0px 0;
+    }
+
+    .labels {
+        display: flex;
+        justify-content: space-between;
+        position: absolute;
+        font-size: smaller;
+        width: 100%;
+        bottom: 0;
+        /* Adjusted positioning for labels to be right below the slider */
+        font-family: Satoshi;
+    }
+
+    .labels span {
+        position: relative;
+        display: inline-block;
+        text-align: center;
+        width: 17px;
+
+        /* Ensure text is centered */
+        /*width: calc(100% / 12); /* Divide by (number of labels - 1) */
+    }
+
+    .labels span::after {
+        content: '';
+        position: absolute;
+        bottom: 20px;
+        /* Positioning tick mark above the label */
+        left: 50%;
+        /* Centering tick mark relative to its parent */
+        transform: translateX(-50%);
+        width: 1px;
+        height: 10px;
+        /* Height of the tick mark */
+        background-color: black;
+    }
+
+    /* ... (rest of your existing CSS) ... */
+    input[type="range"] {
+        /* removing default appearance */
+        -webkit-appearance: none;
+        appearance: none;
+        /* creating a custom design */
+        width: 100%;
+        cursor: pointer;
+        outline: none;
+        border-radius: 15px;
+        /*  overflow: hidden;  remove this line*/
+
+        /* New additions */
+        height: 6px;
+        background: #ccc;
+        border-radius: 8px;
+        background: var(--colour-neutral-light-grey, #F5F6F7);
+
+        /* Inner shadow */
+        box-shadow: 0px 2px 2px -1px rgba(74, 74, 104, 0.10) inset;
+    }
+
+
+
+    /* Thumb: webkit */
+    input[type="range"]::-webkit-slider-thumb {
+        /* removing default appearance */
+        -webkit-appearance: none;
+        appearance: none;
+        /* creating a custom design */
+        height: 15px;
+        width: 15px;
+        background-color: #0c0c0c;
+        border-radius: 50%;
+        border: none;
+
+        /* box-shadow: -407px 0 0 400px #0c0c0c; emove this line */
+        transition: .2s ease-in-out;
+
+    }
+
+    /* Thumb: Firefox */
+    input[type="range"]::-moz-range-thumb {
+        height: 15px;
+        width: 15px;
+        background-color: #0c0c0c;
+        border-radius: 50%;
+        border: none;
+
+        /* box-shadow: -407px 0 0 400px #0c0c0c; emove this line */
+        transition: .2s ease-in-out;
+    }
+
+    /* Hover, active & focus Thumb: Webkit */
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+        box-shadow: 0 0 0 10px #0c0c0c4a
+    }
+
+    input[type="range"]:active::-webkit-slider-thumb {
+        box-shadow: 0 0 0 13px #0c0c0c54
+    }
+
+    /* Hover, active & focus Thumb: Firfox */
+
+    input[type="range"]::-moz-range-thumb:hover {
+        box-shadow: 0 0 0 10px #0c0c0c4a
+    }
+
+    input[type="range"]:active::-moz-range-thumb {
+        box-shadow: 0 0 0 13px #0c0c0c54
+    }
+
+    #price-stats-ctr {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        margin-left: 30px;
+    }
+
+    #design-count-ctr {
+    }
+
+    #design-count {
+        font-size: 40px;
+    }
+
+    #price-per-protein-ctr {
+    }
+
+    #price-per-protein {
+        font-size: 40px;
+    }
+
+    #total-price-ctr {
+        grid-column: span 2;
+    }
+
+    #total-price {
+        font-size: 40px;
+    }
+
+    @media (max-width: 1050px) {
+    .slider-and-stats-ctr {
+        grid-template-columns: 1fr;
+        row-gap: 20px;
+    }
+
+    #price-stats-ctr {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        margin-left: 0px;
+    }
+}
+</style>
+<div class="slider-and-stats-ctr">
+    <div class="slider-container">
+        <input type="range" min="0" max="96" value="16" step="1" class="slider" id="seq-count-slider">
+        <div class="labels">
+            <span id="one-digit-zero">0</span>
+            <span id="one-digit-eight">8</span>
+            <span>16</span>
+            <span>24</span>
+            <span>32</span>
+            <span>40</span>
+            <span>48</span>
+            <span>56</span>
+            <span>64</span>
+            <span>72</span>
+            <span>80</span>
+            <span>88</span>
+            <span>96</span>
+        </div>
+    </div>
+    <div id="price-stats-ctr">
+        <div id="design-count-ctr">
+            <div id="design-count">
+
+            </div>
+            <div>
+                Designs
+            </div>
+        </div>
+        <div id="price-per-protein-ctr">
+            <div id="price-per-protein">
+
+            </div>
+            <div>
+                Price per Protein
+            </div>
+        </div>
+        <div id="total-price-ctr">
+            <div id="total-price">
+
+            </div>
+            <div>
+                Total Price
+            </div>
+        </div>
+    </div>
+    <script>
+
+        const slider = document.getElementById("seq-count-slider");
+        const designCount = document.getElementById("design-count")
+        const pricePerProtein = document.getElementById("price-per-protein")
+        const totalPrice = document.getElementById("total-price")
+
+        const computePricePerProtein = (seqCount) => {
+            if (seqCount <= 16) {
+                return 199
+            }
+            if (seqCount <= 48) {
+                return 159
+            }
+            if (seqCount <= 96) {
+                return 139
+            }
+        }
+
+        const computeTotalPrice = (pricePerProtein, seqCount) => {
+            return pricePerProtein * seqCount
+        }
+
+        const progress = (slider.value / slider.max) * 100;
+
+        slider.style.background = `linear-gradient(to right, #0c0c0c ${progress}%, #ccc ${progress}%)`;
+        designCount.innerHTML = slider.value;
+        pricePerProtein.innerHTML = "$ " + computePricePerProtein(slider.value)
+        totalPrice.innerHTML = "$ " + computeTotalPrice(computePricePerProtein(slider.value), slider.value)
+
+        slider.addEventListener("input", function () {
+            if (parseInt(slider.value) < 8) {
+                slider.value = 8;
+            }
+            const progress = (slider.value / slider.max) * 100;
+
+            slider.style.background = `linear-gradient(to right, #0c0c0c ${progress}%, #ccc ${progress}%)`;
+            designCount.innerHTML = slider.value;
+            pricePerProtein.innerHTML = "$ " + computePricePerProtein(slider.value)
+            totalPrice.innerHTML = "$ " + computeTotalPrice(computePricePerProtein(slider.value), slider.value)
+        });
+    </script>
+</div>
